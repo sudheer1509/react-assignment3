@@ -1,0 +1,28 @@
+.card {
+  height: 400px;
+  width: calc(33.3% - 20px);
+  border-radius: 8px;
+  margin: 10px;
+  cursor: pointer;
+  position: relative;
+}
+.card img {
+  height: 100%;
+  width: 100%;
+  border-radius: 8px;
+}
+.cardoverlay {
+  position: absolute;
+  border-radius: 8px;
+  justify-content: center;
+  align-items: flex-end;
+  top: 0;
+  left: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.card:hover > .cardoverlay {
+  display: flex;
+}
