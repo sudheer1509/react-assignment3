@@ -9,28 +9,44 @@ class App extends Component {
     super(props);
     this.state = {
       apiData: [],
-      loader: true,
+      filteredMovieList: [],
+      searchQuery: "",
     };
   }
 
   componentDidMount() {
     fetch("https://www.omdbapi.com/?apikey=45f0782a&s=war")
       .then((response) => response.json())
-      .then((data) => this.setState({ apiData: data.Search, loader: false }));
+      .then((data) => this.setState({ apiData: data.Search }));
   }
+  handleSearch = (e) => {
+    let filteredMovieList = this.state.apiData.filter((movie) =>
+      movie.Title.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    console.log(filteredMovieList);
+    this.setState({
+      filteredMovieList: filteredMovieList,
+      searchQuery: e.target.value,
+    });
+  };
   render() {
-    let { apiData, loader } = this.state;
+    let { apiData, filteredMovieList, searchQuery } = this.state;
     return (
       <>
-        <Header />
-        <div className={classes.cardGrid}>
-          {loader ? (
-            <div className={classes.loader}></div>
-          ) : (
-            apiData.map((item, pos) => (
-              <Card key={pos} src={item.Poster} title={item.Title} />
-            ))
-          )}
+        <Header
+          searchQuery={this.searchQuery}
+          handleSearch={this.handleSearch}
+        />
+        <div>
+          <div className={classes.cardGrid}>
+            {filteredMovieList && searchQuery !== ""
+              ? filteredMovieList.map((item, pos) => (
+                  <Card key={pos} src={item.Poster} title={item.Title} />
+                ))
+              : apiData.map((item, pos) => (
+                  <Card key={pos} src={item.Poster} title={item.Title} />
+                ))}
+          </div>
         </div>
         <Footer />
       </>
